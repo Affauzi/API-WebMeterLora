@@ -14,7 +14,7 @@ DataMeter.getAll = (result) => {
       return;
     }
 
-    console.log("datameter: ", res);
+    //console.log("datameter: ", res);
     result(null, res);
   });
 };
@@ -27,7 +27,7 @@ DataMeter.getJumlah = (result) => {
       return;
     }
 
-    console.log("Jumlah Data: ", res);
+    //console.log("Jumlah Data: ", res);
     result(null, res);
   });
 };
@@ -40,7 +40,7 @@ DataMeter.create = (dataMeter, result) => {
       return;
     }
 
-    console.log("created datameter: ", { ...dataMeter });
+    //console.log("created datameter: ", { ...dataMeter });
     result(null, { ...dataMeter });
   });
 };

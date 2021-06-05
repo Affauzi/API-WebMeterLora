@@ -23,7 +23,7 @@ DataAntares.getAll = (result) => {
       return;
     }
 
-    console.log("datameter: ", res);
+    //console.log("datameter: ", res);
     result(null, res);
   });
 };
