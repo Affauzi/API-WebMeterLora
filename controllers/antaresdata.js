@@ -12,6 +12,7 @@ require("console-stamp")(console, "[HH:MM:ss]");
 var allFunc = require("../models/allFunction");
 const { array } = require("prop-types");
 const { getJumlah } = require("../models/dataMeter");
+const dataMeter = require("../controllers/datameter");
 
 var datetime = new Date();
 
@@ -24,81 +25,86 @@ exports.findAll = async (req, res) => {
     else res.send(data);
   });
 
-  const axiosJumlahMeter = axios.create({
-    baseURL: "http://localhost:3001",
-    headers: {
-      "Content-Type": "application/json;ty=4",
-      Accept: "application/json",
-    },
-    method: "get", // default
-  });
+  var jumlah = dataMeter.getJumlahMeter();
+  var namaMeter = dataMeter.getNamaMeter();
 
-  try {
-    const responseJumlah = await axiosJumlahMeter.get("/jumlahmeter");
+  console.log("jumlah: ", jumlah);
 
-    // var APIData = JSON.parse(
-    //   parse(stringify(response)).data["m2m:cin"].con
-    // ).data;
+  // const axiosJumlahMeter = axios.create({
+  //   baseURL: "http://localhost:3001",
+  //   headers: {
+  //     "Content-Type": "application/json;ty=4",
+  //     Accept: "application/json",
+  //   },
+  //   method: "get", // default
+  // });
 
-    //console.log(responseJumlah);
-    var jumlah1 = JSON.parse(JSON.stringify(responseJumlah.data[0])).cnt;
+  // try {
+  //   const responseJumlah = await axiosJumlahMeter.get("/jumlahmeter");
 
-    console.log(jumlah1);
+  //   // var APIData = JSON.parse(
+  //   //   parse(stringify(response)).data["m2m:cin"].con
+  //   // ).data;
 
-    // var NamaMeter =
-  } catch (error) {
-    console.log(error);
-  }
+  //   //console.log(responseJumlah);
+  //   var jumlah1 = JSON.parse(JSON.stringify(responseJumlah.data[0])).cnt;
 
-  const axiosNamaMeter = axios.create({
-    baseURL: "http://localhost:3001",
-    headers: {
-      "Content-Type": "application/json;ty=4",
-      Accept: "application/json",
-    },
-    method: "get", // default
-  });
+  //   console.log(jumlah1);
 
-  try {
-    const responseNama = await axiosNamaMeter.get("/namameter");
+  //   // var NamaMeter =
+  // } catch (error) {
+  //   console.log(error);
+  // }
 
-    console.log(JSON.parse(JSON.stringify(responseNama.data[0])).nama_meter);
+  // const axiosNamaMeter = axios.create({
+  //   baseURL: "http://localhost:3001",
+  //   headers: {
+  //     "Content-Type": "application/json;ty=4",
+  //     Accept: "application/json",
+  //   },
+  //   method: "get", // default
+  // });
 
-    var arrayMeter = [];
-    var dataMeterAll;
-    for (let i = 0; i < jumlah1; i++) {
-      dataMeterAll = arrayMeter.push(
-        JSON.parse(JSON.stringify(responseNama.data[i])).nama_meter
-      );
+  // try {
+  //   const responseNama = await axiosNamaMeter.get("/namameter");
 
-      console.log(arrayMeter[i]);
-    }
+  //   console.log(JSON.parse(JSON.stringify(responseNama.data[0])).nama_meter);
 
-    // var NamaMeter =
-  } catch (error) {
-    console.log(error);
-  }
+  //   var arrayMeter = [];
+  //   var dataMeterAll;
+  //   for (let i = 0; i < jumlah1; i++) {
+  //     dataMeterAll = arrayMeter.push(
+  //       JSON.parse(JSON.stringify(responseNama.data[i])).nama_meter
+  //     );
 
-  DataMeter.getJumlah((err, data) => {
-    //console.log(data);
-    jumlah = data;
+  //     console.log(arrayMeter[i]);
+  //   }
 
-    var jumlah1 = JSON.parse(JSON.stringify(jumlah[0])).cnt;
-    // console.log("jumlah: ", jumlah1, "\n");
-    //console.log(jumlah1, typeof jumlah1);
-    DataMeter.getAll((err, data) => {
-      namaMeter = data;
-      //console.log(jumlah1);
-      var arrayMeter = [];
-      var dataMeterAll;
-      for (let i = 0; i < jumlah1; i++) {
-        dataMeterAll = arrayMeter.push(
-          JSON.parse(JSON.stringify(namaMeter[i])).nama_meter
-        );
-        //console.log(arrayMeter[i]);
-      }
-    });
-  });
+  //   // var NamaMeter =
+  // } catch (error) {
+  //   console.log(error);
+  // }
+
+  // DataMeter.getJumlah((err, data) => {
+  //   //console.log(data);
+  //   jumlah = data;
+
+  //   var jumlah1 = JSON.parse(JSON.stringify(jumlah[0])).cnt;
+  //   // console.log("jumlah: ", jumlah1, "\n");
+  //   //console.log(jumlah1, typeof jumlah1);
+  //   DataMeter.getAll((err, data) => {
+  //     namaMeter = data;
+  //     //console.log(jumlah1);
+  //     var arrayMeter = [];
+  //     var dataMeterAll;
+  //     for (let i = 0; i < jumlah1; i++) {
+  //       dataMeterAll = arrayMeter.push(
+  //         JSON.parse(JSON.stringify(namaMeter[i])).nama_meter
+  //       );
+  //       //console.log(arrayMeter[i]);
+  //     }
+  //   });
+  // });
 };
 
 exports.create = async (req, res) => {
@@ -261,7 +267,7 @@ exports.create = async (req, res) => {
       // console.log(APIData);
 
       // APIData = dataHex.slice(0, 2);
-      // console.log("Slice 0 2: " + APIData);
+      // console.log("Slice 0 2: "  + APIData);
       //console.log(json_data);
     } catch (error) {
       // perhatikan pesan error, setiap promise try and catch,
@@ -356,9 +362,9 @@ exports.create = async (req, res) => {
             err.message ||
             "Some error occurred while creating the AntaresData.",
         });
-      else res.write(data);
+      else res.send(data);
 
-      res.send();
+      //res.send();
     });
 
     i += 1;
