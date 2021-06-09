@@ -15,6 +15,7 @@ const { getJumlah } = require("../models/dataMeter");
 const dataMeter = require("../controllers/datameter");
 
 var datetime = new Date();
+var jumlah;
 
 exports.findAll = (req, res) => {
   DataAntares.getAll((err, data) => {
@@ -25,12 +26,84 @@ exports.findAll = (req, res) => {
     else res.send(data);
   });
 
-  var jumlah = allFunc.FuncGetJumlah(function (err, callback) {});
+  /**
+   * ================================================================================
+   * Solusi PERTAMA:
+   * Sebenernya ini udah betul, dan bisa
+   * yang namanya asinkronus function itu ya cara kerjanya 
+   * cuma bisa dapet value di dalem dia sendiri,
+   * nah di bawah ini FuncGetJumlah ini termasuk async karena kan lu callback dari
+   * getJumlah, di mana get jumlah itu dapet dari connection db, 
+   * nah connection ini yang sifatnya async. lo callback semua kan.
+   * @see https://stackoverflow.com/questions/18195754/javascript-cant-assign-variable-values-due-to-asynchronous-function
+   * ================================================================================
+   */
+  allFunc.FuncGetJumlah(function (err, callback) {
 
-  var namaMeter = dataMeter.getNamaMeter();
+    // tugas lu cuma harus kerja di dalam function ini aja.
+    // ini kan valuenya udah dapet:
+    console.log("jumlah: ", callback, typeof callback)
+    var namaMeter = dataMeter.getNamaMeter(); // ini lu samain aja ya
+    console.log("namaMeter: ", typeof namaMeter); // ini lu samain aja ya
 
-  console.log("jumlah: ", jumlah, typeof jumlah);
-  console.log("namaMeter: ", typeof namaMeter);
+    // kalo tadi mau for loop dll, ya lakuin aja di sini, mau insert, axios 
+    // terserah, di sini bisa semua.
+    // logika lain
+    // logika lain di sini aja.
+    // dan seterusnya sampe abis exportnya. nested terus di dalem sini
+
+
+    // potongan ini functional khusus buat solusi KEDUA
+    assigner(callback);
+
+  });
+
+  /**
+   * ================================================================================
+   * END SOLUSI PERTAMA
+   * ================================================================================
+   */
+
+  // Nah sebelumnya ini lu gak bisa se mena-mena, 
+  // karena kalo console di sini kan artinya di luar function async. 
+  // kalo mau async ya async. mau sync ya pake sync juga. gue comment ya
+  // console.log("jumlah: ", jumlah, typeof jumlah);
+  // console.log("namaMeter: ", typeof namaMeter);
+
+  /**
+   * ================================================================================
+   * SOLUSI KEDUA:
+   * kalo mau solusi lain, async+sync sebenernya gampang, tapi terlalu risky
+   * karena gak bisa mastiin async function kelarnya kapan, jadi opportunistic doang.
+   * pake setTimeout aja. Contoh:
+   * ================================================================================
+   */
+  function assigner(data) {
+    jumlah = data;
+  }
+
+  // lu harus set mau dieksekusinya kapan, misal timeout 2.5 detik
+  // coba sekarang lu pencet berkali2 si postman nya dalam waktu yang berdekatan, 
+  // tunggu dan dilihat hasilnya..
+  // kekurangannya adalah dia munculnya telat2, request lu diprosesnya ya juga harus telat
+  // khawatirnya nilainya ketuker2 aja sih. Jadi kalo mau make cara ini, 
+  // pastiin aja nilainya baik-baik aja. dan tidak terdistraksi oleh hal lain.
+  // menurut gue lebih intuitive kalo pake yang async aja.
+  setTimeout(function () {
+    console.log(`SOLUSI LAIN: ${jumlah}`);
+
+    // FOR LOOP DAN YANG LAINNYA  
+    // logika lain di sini
+    // dan seterusnya sampe abis exportnya. nested terus
+
+  }, 2500);
+
+
+  /**
+   * ================================================================================
+   * END SOLUSI KEDUA:
+   * ================================================================================
+   */
 
   // const axiosJumlahMeter = axios.create({
   //   baseURL: "http://localhost:3001",
@@ -180,9 +253,8 @@ exports.create = async (req, res) => {
 
   for (let i = 0; i < jumlah1; i++) {
     try {
-      var url = `${"~/antares-cse/antares-id/Energy_Meter/"}${
-        arrayMeter[i]
-      }${"/la"}`;
+      var url = `${"~/antares-cse/antares-id/Energy_Meter/"}${arrayMeter[i]
+        }${"/la"}`;
 
       console.log("URL:", url);
 
