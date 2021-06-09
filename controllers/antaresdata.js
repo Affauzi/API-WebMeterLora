@@ -14,11 +14,12 @@ const { array } = require("prop-types");
 const { getJumlah } = require("../models/dataMeter");
 const dataMeter = require("../controllers/datameter");
 const { post } = require("request");
+const e = require("express");
 
 var datetime = new Date();
 var jumlah;
 var no_meter;
-var post_resp;
+var post_resp = [];
 
 exports.findAll = (req, res) => {
   DataAntares.getAll((err, data) => {
@@ -470,16 +471,16 @@ exports.create = async (req, res) => {
 
                 var responseAssigner = function (err, data) {
                   if (!err) {
-                    if (i == jumlahMeter - 2) {
-                      post_resp = data;
+                    if (i === jumlahMeter - 2) {
+                      post_resp.push(data);
                       console.log(post_resp);
                       res.send(post_resp);
                     } else {
-                      post_resp = data + ','
+                      post_resp.push(data);
                     }
                   }
                   else {
-                    post_resp = err;
+                    post_resp.push(data);
                   }
                 };
 
