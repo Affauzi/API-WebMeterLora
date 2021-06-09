@@ -13,9 +13,12 @@ var allFunc = require("../models/allFunction");
 const { array } = require("prop-types");
 const { getJumlah } = require("../models/dataMeter");
 const dataMeter = require("../controllers/datameter");
+const { post } = require("request");
 
 var datetime = new Date();
 var jumlah;
+var no_meter;
+var post_resp;
 
 exports.findAll = (req, res) => {
   DataAntares.getAll((err, data) => {
@@ -211,6 +214,7 @@ exports.findAll = (req, res) => {
   // });
 };
 
+
 exports.create = async (req, res) => {
   // Validate request
   //  console.log(JSON.parse(JSON.parse(JSON.stringify(req.body))['m2m:cin'].con).data);
@@ -284,97 +288,210 @@ exports.create = async (req, res) => {
 
       for (let i = 0; i < jumlahMeter; i++) {
         try {
-          var url = `${"~/antares-cse/antares-id/Energy_Meter/"}${
-            namaMeter[i]
-          }${"/la"}`;
+          var url = `${"~/antares-cse/antares-id/Energy_Meter/"}${namaMeter[i]
+            }${"/la"}`;
 
           console.log("URL:", url);
 
-          const response = axiosInstance.get(url);
+          // axiosInstance.get(url).then(resp => {
+          //   console.log(`RESPONSE HEHE: ` + resp);
+          // }).catch(err => {
 
-          console.log(response);
-          // nah, sekarang pake flatted untuk parsing dan stringifynya
-          // karena response dari axios tsb bentuknya circular json (atau nested json)
-          // console.log(JSON.parse(parse(stringify(response)).data['m2m:cin'].con).data)
+          // });
 
-          var APIData = JSON.parse(
-            parse(stringify(response)).data["m2m:cin"].con
-          ).data;
+          axiosInstance.get(url)
+            .then(async (response) => {
+              console.log(`HOOOOOOO: ${response}`);
+              // nah, sekarang pake flatted untuk parsing dan stringifynya
+              // karena response dari axios tsb bentuknya circular json (atau nested json)
+              // console.log(JSON.parse(parse(stringify(response)).data['m2m:cin'].con).data)
 
-          var no_meter = APIData;
-          // console.log("DATA ASLI JSON: " + APIData);
+              var APIData = JSON.parse(
+                parse(stringify(response)).data["m2m:cin"].con
+              ).data;
 
-          // console.log(new Buffer.from(APIData, "Hex"));
-          // console.log(APIData);
+              var assigners = function (data) {
+                no_meter = data;
+              }
 
-          APIData = APIData.slice(20, 80);
+              assigners(APIData);
 
-          // console.log("APIData 20-80: " + APIData);
+              // console.log("DATA ASLI JSON: " + APIData);
 
-          // console.log("APIData 0-2: " + APIData.slice(0, 2));
-          // console.log("APIData 2-4: " + APIData.slice(2, 4));
-          dataHex = hex(APIData);
+              // console.log(new Buffer.from(APIData, "Hex"));
+              // console.log(APIData);
 
-          var j = 0,
-            k = 2;
+              APIData = APIData.slice(20, 80);
 
-          var hexa33 = 51;
-          //console.log("hexa33toBin: " + hexa33);
-          //console.log(APIData.length);
+              // console.log("APIData 20-80: " + APIData);
 
-          var HexTemp = 0,
-            HexTemp2;
+              // console.log("APIData 0-2: " + APIData.slice(0, 2));
+              // console.log("APIData 2-4: " + APIData.slice(2, 4));
+              dataHex = hex(APIData);
 
-          for (let i = 0; i < APIData.length / 2; i++) {
-            //console.log(j, k)
+              var j = 0,
+                k = 2;
 
-            var Data1 = APIData.slice(j, k);
-            //console.log(Data1)
+              var hexa33 = 51;
+              //console.log("hexa33toBin: " + hexa33);
+              //console.log(APIData.length);
 
-            Data1 = parseInt(Data1, 16);
+              var HexTemp = 0,
+                HexTemp2;
 
-            // Data1 = hex2bin(Data1)
-            // console.log(typeof Data1);
-            // console.log("Data1 Hex: " + Data1);
-            // console.log("hexa33: " + hexa33);
+              for (let i = 0; i < APIData.length / 2; i++) {
+                //console.log(j, k)
 
-            var HasilData = Data1 - hexa33;
-            //console.log(typeof HasilData);
-            // console.log("HasilDataInteger: " + HasilData);
+                var Data1 = APIData.slice(j, k);
+                //console.log(Data1)
 
-            //console.log(HasilData.toString().length);
+                Data1 = parseInt(Data1, 16);
 
-            if (HasilData.toString().length == 1) {
-              HasilData = "0" + HasilData;
-              // console.log("HasilData If: " + HasilData + "\n");
-            } else {
-              HasilData = HasilData.toString(16);
-              //console.log(typeof HasilData);
-              // console.log("HasilData else: " + HasilData + "\n");
-            }
+                // Data1 = hex2bin(Data1)
+                // console.log(typeof Data1);
+                // console.log("Data1 Hex: " + Data1);
+                // console.log("hexa33: " + hexa33);
 
-            //PERHITUNGAN DIMULAI DARI INDEX KE-1 KARENA ADA PENAMBAHAN 0 DIAWAL DATA
-            HexTemp2 = HasilData;
+                var HasilData = Data1 - hexa33;
+                //console.log(typeof HasilData);
+                // console.log("HasilDataInteger: " + HasilData);
 
-            var HasilDataFinal = `${HexTemp}${HexTemp2}`;
+                //console.log(HasilData.toString().length);
 
-            HexTemp = HasilDataFinal;
+                if (HasilData.toString().length == 1) {
+                  HasilData = "0" + HasilData;
+                  // console.log("HasilData If: " + HasilData + "\n");
+                } else {
+                  HasilData = HasilData.toString(16);
+                  //console.log(typeof HasilData);
+                  // console.log("HasilData else: " + HasilData + "\n");
+                }
 
-            //console.log("Data2Hex: " + Data2Hex)
-            //DataHexadecimal = DataHexadecimal+toString(Data2Hex);
+                //PERHITUNGAN DIMULAI DARI INDEX KE-1 KARENA ADA PENAMBAHAN 0 DIAWAL DATA
+                HexTemp2 = HasilData;
 
-            j += 2;
-            k += 2;
-          }
-          // console.log(typeof HasilDataFinal);
-          // console.log("HASILDATA FINAL: " + HasilDataFinal);
+                var HasilDataFinal = `${HexTemp}${HexTemp2}`;
 
-          //APIData = APIData.hexEncode().hexDecode();
-          // console.log(APIData);
+                HexTemp = HasilDataFinal;
 
-          // APIData = dataHex.slice(0, 2);
-          // console.log("Slice 0 2: "  + APIData);
-          //console.log(json_data);
+                //console.log("Data2Hex: " + Data2Hex)
+                //DataHexadecimal = DataHexadecimal+toString(Data2Hex);
+
+                j += 2;
+                k += 2;
+              }
+              // console.log(typeof HasilDataFinal);
+              // console.log("HASILDATA FINAL: " + HasilDataFinal);
+
+              //APIData = APIData.hexEncode().hexDecode();
+              // console.log(APIData);
+
+              // APIData = dataHex.slice(0, 2);
+              // console.log("Slice 0 2: "  + APIData);
+              //console.log(json_data);
+
+              //var hexBuatan = "0x";
+              //console.log("HASIL SLICE: " + HasilDataFinal.slice(0, 4));
+              // var Hex2Float = parseFloat(HasilDataFinal.slice(36, 41));
+              // console.log("PANJANG DATA: " + HasilDataFinal.length);
+              // console.log(Hex2Float);
+
+              //var address = HasilDataFinal.slice(1, 9);
+              console.log('NOMETERRRRR:' + no_meter);
+              var m = 12,
+                n = 14;
+              var hasil_no_meter;
+              var tmp_no_meter2 = "";
+              for (let i = 0; i < 6; i++) {
+                //console.log(m, n);
+                var tmp_no_meter = no_meter.slice(m, n);
+
+                //console.log("NO_METER: " + tmp_no_meter);
+                // var hasil_no_meter = no_meter;
+                //console.log(typeof tmp_no_meter);
+
+                hasil_no_meter = tmp_no_meter2.concat(tmp_no_meter);
+
+                tmp_no_meter2 = hasil_no_meter;
+
+                (m = m - 2), (n = n - 2);
+              }
+
+              console.log("HASIL NO METER: " + hasil_no_meter);
+
+              var activeTotal = HasilDataFinal.slice(9, 17);
+              var activePlus = HasilDataFinal.slice(17, 25);
+              var activeMinus = HasilDataFinal.slice(25, 33);
+              var voltage = HasilDataFinal.slice(33, 37);
+              var current = HasilDataFinal.slice(37, 43);
+              var instantPower = HasilDataFinal.slice(43, 49);
+              var frequency = HasilDataFinal.slice(49, 53);
+              var powerFactor = HasilDataFinal.slice(53, 57);
+              var status = HasilDataFinal.slice(57, 58);
+
+              // console.log("address: " + address);
+              // console.log("activeTotal: " + activeTotal);
+              // console.log("activePlus: " + activePlus);
+              // console.log("activeMinus: " + activeMinus);
+              // console.log("voltage: " + voltage);
+              // console.log("current: " + current);
+              // console.log("instantPower: " + instantPower);
+              // console.log("frequency: " + frequency);
+              // console.log("powerFactor: " + powerFactor);
+              // console.log("status: " + status);
+
+              allFunc.FuncVoltage(voltage);
+              allFunc.FuncCurrent(current);
+              allFunc.FuncActiveTotal(activeTotal);
+              allFunc.FuncActivePlus(activePlus);
+              allFunc.FuncActiveMinus(activeMinus);
+              allFunc.FuncInstantPower(instantPower);
+              allFunc.FuncFrequency(frequency);
+              allFunc.FuncPowerFactor(powerFactor);
+              //console.log(HasilDataFinal.slice(32, 35).length);
+
+              // Create a DataAntares
+              var newData = new DataAntares({
+                ActiveTotal: allFunc.FuncActiveTotal(activeTotal),
+                ActivePlus: allFunc.FuncActivePlus(activePlus),
+                ActiveMinus: allFunc.FuncActiveMinus(activeMinus),
+                Voltage: allFunc.FuncVoltage(voltage),
+                Current: allFunc.FuncCurrent(current),
+                InstantPower: allFunc.FuncInstantPower(instantPower),
+                Frequency: allFunc.FuncFrequency(frequency),
+                PowerFactor: allFunc.FuncPowerFactor(powerFactor),
+                Status: status,
+                No_Meter: hasil_no_meter,
+                Datetime: datetime,
+              });
+
+              DataAntares.create(newData, (err, data) => {
+                console.log(`DATAAAAA: ${data}`);
+
+                var responseAssigner = function (err, data) {
+                  if (!err) {
+                    if (i == jumlahMeter - 2) {
+                      post_resp = data;
+                      console.log(post_resp);
+                      res.send(post_resp);
+                    } else {
+                      post_resp = data + ','
+                    }
+                  }
+                  else {
+                    post_resp = err;
+                  }
+                };
+
+                if (i == jumlahMeter - 2)
+                  responseAssigner(err, data)
+
+              });
+            })
+            .catch(err => {
+              // Handle Error Here
+              console.error(err);
+            });
         } catch (error) {
           // perhatikan pesan error, setiap promise try and catch,
           // artinya best practicenya kita harus menyediakan si error itu muncul
@@ -383,95 +500,6 @@ exports.create = async (req, res) => {
           // lebih baik ini
           console.log(error);
         }
-
-        //var hexBuatan = "0x";
-        //console.log("HASIL SLICE: " + HasilDataFinal.slice(0, 4));
-        // var Hex2Float = parseFloat(HasilDataFinal.slice(36, 41));
-        // console.log("PANJANG DATA: " + HasilDataFinal.length);
-        // console.log(Hex2Float);
-
-        //var address = HasilDataFinal.slice(1, 9);
-
-        var m = 12,
-          n = 14;
-        var hasil_no_meter;
-        var tmp_no_meter2 = "";
-        for (let i = 0; i < 6; i++) {
-          //console.log(m, n);
-          var tmp_no_meter = no_meter.slice(m, n);
-
-          //console.log("NO_METER: " + tmp_no_meter);
-          // var hasil_no_meter = no_meter;
-          //console.log(typeof tmp_no_meter);
-
-          hasil_no_meter = tmp_no_meter2.concat(tmp_no_meter);
-
-          tmp_no_meter2 = hasil_no_meter;
-
-          (m = m - 2), (n = n - 2);
-        }
-
-        console.log("HASIL NO METER: " + hasil_no_meter);
-
-        var activeTotal = HasilDataFinal.slice(9, 17);
-        var activePlus = HasilDataFinal.slice(17, 25);
-        var activeMinus = HasilDataFinal.slice(25, 33);
-        var voltage = HasilDataFinal.slice(33, 37);
-        var current = HasilDataFinal.slice(37, 43);
-        var instantPower = HasilDataFinal.slice(43, 49);
-        var frequency = HasilDataFinal.slice(49, 53);
-        var powerFactor = HasilDataFinal.slice(53, 57);
-        var status = HasilDataFinal.slice(57, 58);
-
-        // console.log("address: " + address);
-        // console.log("activeTotal: " + activeTotal);
-        // console.log("activePlus: " + activePlus);
-        // console.log("activeMinus: " + activeMinus);
-        // console.log("voltage: " + voltage);
-        // console.log("current: " + current);
-        // console.log("instantPower: " + instantPower);
-        // console.log("frequency: " + frequency);
-        // console.log("powerFactor: " + powerFactor);
-        // console.log("status: " + status);
-
-        allFunc.FuncVoltage(voltage);
-        allFunc.FuncCurrent(current);
-        allFunc.FuncActiveTotal(activeTotal);
-        allFunc.FuncActivePlus(activePlus);
-        allFunc.FuncActiveMinus(activeMinus);
-        allFunc.FuncInstantPower(instantPower);
-        allFunc.FuncFrequency(frequency);
-        allFunc.FuncPowerFactor(powerFactor);
-        //console.log(HasilDataFinal.slice(32, 35).length);
-
-        // Create a DataAntares
-        var newData = new DataAntares({
-          ActiveTotal: allFunc.FuncActiveTotal(activeTotal),
-          ActivePlus: allFunc.FuncActivePlus(activePlus),
-          ActiveMinus: allFunc.FuncActiveMinus(activeMinus),
-          Voltage: allFunc.FuncVoltage(voltage),
-          Current: allFunc.FuncCurrent(current),
-          InstantPower: allFunc.FuncInstantPower(instantPower),
-          Frequency: allFunc.FuncFrequency(frequency),
-          PowerFactor: allFunc.FuncPowerFactor(powerFactor),
-          Status: status,
-          No_Meter: hasil_no_meter,
-          Datetime: datetime,
-        });
-
-        DataAntares.create(newData, (err, data) => {
-          //res.setHeader("Content-Type", "application/json");
-          res.setHeader("Content-Type", "text/html");
-          if (err)
-            res.status(500).send({
-              message:
-                err.message ||
-                "Some error occurred while creating the AntaresData.",
-            });
-          else res.send(data);
-
-          //res.send();
-        });
 
         i += 1;
       }
