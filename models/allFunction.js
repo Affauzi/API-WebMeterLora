@@ -7,7 +7,19 @@ function getJumlah(word, callback) {
     function (err, rows) {
       if (err) return callback(err);
 
-      console.log("rows:", rows);
+      //console.log("rows:", rows);
+      callback(null, rows);
+    }
+  );
+}
+
+function getNama(word, callback) {
+  connection.query(
+    "SELECT nama_meter FROM uimeter_datameter",
+    function (err, rows) {
+      if (err) return callback(err);
+
+      //console.log("rows:", rows);
       callback(null, rows);
     }
   );
@@ -108,7 +120,21 @@ module.exports = {
       result = result.map((obj) => obj);
       // result should now look like ['someword','someword2']
       // return it
-      console.log(result);
+      //console.log(result);
+      callback(null, result);
+
+      // return result;
+    });
+  },
+
+  FuncGetNama: function FuncGetNama(callback) {
+    getNama("e", function (err, result) {
+      if (err || !result.length) return callback("error or no results");
+      // since result is array of objects [{word: 'someword'},{word: 'someword2'}] let's remap it
+      result = result.map((obj) => obj);
+      // result should now look like ['someword','someword2']
+      // return it
+      //console.log(result);
       callback(null, result);
 
       // return result;
