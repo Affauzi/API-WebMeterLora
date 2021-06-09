@@ -16,7 +16,7 @@ const dataMeter = require("../controllers/datameter");
 
 var datetime = new Date();
 
-exports.findAll = async (req, res) => {
+exports.findAll = (req, res) => {
   DataAntares.getAll((err, data) => {
     if (err)
       res.status(500).send({
@@ -25,10 +25,12 @@ exports.findAll = async (req, res) => {
     else res.send(data);
   });
 
-  var jumlah = dataMeter.getJumlahMeter();
+  var jumlah = allFunc.FuncGetJumlah(function (err, callback) {});
+
   var namaMeter = dataMeter.getNamaMeter();
 
-  console.log("jumlah: ", jumlah);
+  console.log("jumlah: ", jumlah, typeof jumlah);
+  console.log("namaMeter: ", typeof namaMeter);
 
   // const axiosJumlahMeter = axios.create({
   //   baseURL: "http://localhost:3001",

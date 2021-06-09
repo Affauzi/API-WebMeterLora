@@ -29,7 +29,7 @@ exports.getJumlahMeter = () => {
   DataMeter.getJumlah((err, jumlahMeter) => {
     if (err) console.log(err);
     var a = JSON.parse(JSON.stringify(jumlahMeter[0].cnt));
-    console.log(typeof a);
+    console.log(typeof a, a);
     return a;
   });
 };

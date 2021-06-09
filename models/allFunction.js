@@ -1,3 +1,18 @@
+const { response } = require("express");
+const connection = require("./database");
+
+function getJumlah(word, callback) {
+  connection.query(
+    "SELECT COUNT(*) as cnt FROM uimeter_datameter",
+    function (err, rows) {
+      if (err) return callback(err);
+
+      console.log("rows:", rows);
+      callback(null, rows);
+    }
+  );
+}
+
 module.exports = {
   FuncVoltage: function FuncVoltage(str) {
     var tempVol = str.slice(2, 4);
@@ -85,6 +100,19 @@ module.exports = {
     //console.log("FinalActiveMinus: " + finalActiveMinus);
 
     return finalActiveMinus;
+  },
+  FuncGetJumlah: function FuncGetJumlah(callback) {
+    getJumlah("e", function (err, result) {
+      if (err || !result.length) return callback("error or no results");
+      // since result is array of objects [{word: 'someword'},{word: 'someword2'}] let's remap it
+      result = result.map((obj) => obj);
+      // result should now look like ['someword','someword2']
+      // return it
+      console.log(result);
+      callback(null, result);
+
+      // return result;
+    });
   },
 };
 
