@@ -480,7 +480,7 @@ exports.create = async (req, res) => {
                     }
                   }
                   else {
-                    post_resp.push(data);
+                    post_resp.push(err);
                   }
                 };
 
