@@ -19,7 +19,6 @@ const e = require("express");
 var datetime = new Date();
 var jumlah;
 var no_meter;
-var post_resp = [];
 
 exports.findAll = (req, res) => {
   DataAntares.getAll((err, data) => {
@@ -287,6 +286,7 @@ exports.create = async (req, res) => {
         method: "get", // default
       });
 
+      var post_resp = [];
       for (let i = 0; i < jumlahMeter; i++) {
         try {
           var url = `${"~/antares-cse/antares-id/Energy_Meter/"}${namaMeter[i]
@@ -470,23 +470,22 @@ exports.create = async (req, res) => {
                 console.log(`DATAAAAA: ${data}`);
 
                 var responseAssigner = function (err, data) {
-                  if (!err) {
-                    if (i === jumlahMeter - 2) {
-                      post_resp.push(data);
-                      console.log(post_resp);
-                      res.send(post_resp);
-                    } else {
-                      post_resp.push(data);
-                    }
+                  if (err) {
+                    post_resp.push(err);
+                    res.send(data);
                   }
                   else {
-                    post_resp.push(err);
+                    res.send(data);
                   }
                 };
 
-                if (i == jumlahMeter - 2)
-                  responseAssigner(err, data)
+                post_resp.push(data);
 
+
+                if (i == jumlahMeter - 1)
+                  responseAssigner(err, post_resp)
+
+                console.log(`ITERATION: ${i}`);
               });
             })
             .catch(err => {
@@ -501,8 +500,6 @@ exports.create = async (req, res) => {
           // lebih baik ini
           console.log(error);
         }
-
-        i += 1;
       }
     });
   });
