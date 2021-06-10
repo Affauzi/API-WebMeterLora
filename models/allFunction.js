@@ -49,7 +49,7 @@ module.exports = {
   },
 
   FuncActiveTotal: function FuncActiveTotal(str) {
-    var base = str.slice(5, 6);
+    var base = str.slice(4, 6);
     var base1 = str.slice(2, 4);
     var rounding = str.slice(0, 2);
 
@@ -61,7 +61,7 @@ module.exports = {
   },
 
   FuncActivePlus: function FuncActivePlus(str) {
-    var base = str.slice(5, 6);
+    var base = str.slice(4, 6);
     var base1 = str.slice(2, 4);
     var rounding = str.slice(0, 2);
 

@@ -214,7 +214,6 @@ exports.findAll = (req, res) => {
   // });
 };
 
-
 exports.create = async (req, res) => {
   // Validate request
   //  console.log(JSON.parse(JSON.parse(JSON.stringify(req.body))['m2m:cin'].con).data);
@@ -289,8 +288,9 @@ exports.create = async (req, res) => {
       var post_resp = [];
       for (let i = 0; i < jumlahMeter; i++) {
         try {
-          var url = `${"~/antares-cse/antares-id/Energy_Meter/"}${namaMeter[i]
-            }${"/la"}`;
+          var url = `${"~/antares-cse/antares-id/Energy_Meter/"}${
+            namaMeter[i]
+          }${"/la"}`;
 
           console.log("URL:", url);
 
@@ -300,7 +300,8 @@ exports.create = async (req, res) => {
 
           // });
 
-          axiosInstance.get(url)
+          axiosInstance
+            .get(url)
             .then(async (response) => {
               console.log(`HOOOOOOO: ${response}`);
               // nah, sekarang pake flatted untuk parsing dan stringifynya
@@ -313,7 +314,7 @@ exports.create = async (req, res) => {
 
               var assigners = function (data) {
                 no_meter = data;
-              }
+              };
 
               assigners(APIData);
 
@@ -398,7 +399,7 @@ exports.create = async (req, res) => {
               // console.log(Hex2Float);
 
               //var address = HasilDataFinal.slice(1, 9);
-              console.log('NOMETERRRRR:' + no_meter);
+              console.log("NOMETERRRRR:" + no_meter);
               var m = 12,
                 n = 14;
               var hasil_no_meter;
@@ -451,6 +452,10 @@ exports.create = async (req, res) => {
               allFunc.FuncPowerFactor(powerFactor);
               //console.log(HasilDataFinal.slice(32, 35).length);
 
+              // console.log(
+              //   "activeTotal: " + allFunc.FuncActiveTotal(activeTotal)
+              // );
+
               // Create a DataAntares
               var newData = new DataAntares({
                 ActiveTotal: allFunc.FuncActiveTotal(activeTotal),
@@ -473,22 +478,19 @@ exports.create = async (req, res) => {
                   if (err) {
                     post_resp.push(err);
                     res.send(data);
-                  }
-                  else {
+                  } else {
                     res.send(data);
                   }
                 };
 
                 post_resp.push(data);
 
-
-                if (i == jumlahMeter - 1)
-                  responseAssigner(err, post_resp)
+                if (i == jumlahMeter - 1) responseAssigner(err, post_resp);
 
                 console.log(`ITERATION: ${i}`);
               });
             })
-            .catch(err => {
+            .catch((err) => {
               // Handle Error Here
               console.error(err);
             });
