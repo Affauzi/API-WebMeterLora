@@ -1,8 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+var cron = require("node-cron");
+const routeAntares = require("./routes/antaresData");
+var router = express.Router();
 
 // ini gue tambahin untuk logging backend, kalo gak diperlukan, apus aja
 var morgan = require("morgan");
+const { post } = require("request");
 
 const app = express();
 
@@ -23,6 +27,23 @@ app.use(express.json());
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "lorameter" });
+});
+
+cron.schedule("*/1 * * * *", async function (req, res) {
+  // await fetch("http://localhost:3001/data", {
+  //   headers: {
+  //     "content-type": "application/json",
+  //   },
+  //   method: "POST",
+  // });
+  console.log(`one minute passed`);
+  req.url = "/data";
+  req.method = "POST";
+  return app._router.handle(req, res, next);
+  // let url = "http://localhost:3001/data/";
+  // await getData(url);
+
+  //fetchingData();
 });
 
 require("./routes/users")(app);

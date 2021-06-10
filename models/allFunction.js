@@ -32,7 +32,7 @@ module.exports = {
     var rounding = str.slice(1, 2);
 
     var finalVoltage = tempVol.concat(tempVol2, ".", rounding);
-    //console.log("Final Voltage: " + finalVoltage);
+    // console.log("Final Voltage: " + finalVoltage);
 
     return finalVoltage;
   },
@@ -43,7 +43,7 @@ module.exports = {
     var rounding1 = str.slice(0, 2);
 
     var finalCurrent = tempCurr.concat(".", rounding, rounding1);
-    //console.log("FinalCurrent: " + finalCurrent);
+    // console.log("FinalCurrent: " + finalCurrent);
 
     return finalCurrent;
   },
@@ -55,7 +55,7 @@ module.exports = {
 
     var finalActiveTotal = base.concat(base1, ".", rounding);
 
-    //console.log("FinalActiveTotal: " + finalActiveTotal);
+    // console.log("FinalActiveTotal: " + finalActiveTotal);
 
     return finalActiveTotal;
   },
@@ -67,7 +67,7 @@ module.exports = {
 
     var finalActivePlus = base.concat(base1, ".", rounding);
 
-    //console.log("FinalActivePlus: " + finalActivePlus);
+    // console.log("FinalActivePlus: " + finalActivePlus);
 
     return finalActivePlus;
   },
@@ -77,7 +77,7 @@ module.exports = {
     var rounding = str.slice(2, 4);
 
     var finalInstantPower = base.concat(".", rounding);
-    //console.log("finalInstantPower:" + finalInstantPower);
+    // console.log("finalInstantPower:" + finalInstantPower);
 
     return finalInstantPower;
   },
@@ -87,7 +87,7 @@ module.exports = {
     var rounding = str.slice(0, 2);
 
     var finalFrequency = base.concat(".", rounding);
-    //console.log("finalFrequency:" + finalFrequency);
+    // console.log("finalFrequency:" + finalFrequency);
 
     return finalFrequency;
   },
@@ -97,7 +97,7 @@ module.exports = {
     var rounding = str.slice(0, 2);
 
     var finalPowerFactor = base.concat(".", rounding);
-    //console.log("finalPowerFactor:" + finalPowerFactor);
+    // console.log("finalPowerFactor:" + finalPowerFactor);
 
     return finalPowerFactor;
   },
@@ -109,7 +109,7 @@ module.exports = {
 
     var finalActiveMinus = base.concat(base1, ".", rounding);
 
-    //console.log("FinalActiveMinus: " + finalActiveMinus);
+    // console.log("FinalActiveMinus: " + finalActiveMinus);
 
     return finalActiveMinus;
   },
@@ -139,6 +139,18 @@ module.exports = {
 
       // return result;
     });
+  },
+
+  FuncGetURL: function FuncGetURL() {
+    const getData = async (url) => {
+      try {
+        const response = await axios.get(url);
+        const data = response.data;
+        console.log(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
   },
 };
 

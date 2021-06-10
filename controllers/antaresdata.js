@@ -303,7 +303,7 @@ exports.create = async (req, res) => {
           axiosInstance
             .get(url)
             .then(async (response) => {
-              console.log(`HOOOOOOO: ${response}`);
+              console.log(`Response: ${response}`);
               // nah, sekarang pake flatted untuk parsing dan stringifynya
               // karena response dari axios tsb bentuknya circular json (atau nested json)
               // console.log(JSON.parse(parse(stringify(response)).data['m2m:cin'].con).data)
@@ -318,14 +318,14 @@ exports.create = async (req, res) => {
 
               assigners(APIData);
 
-              // console.log("DATA ASLI JSON: " + APIData);
+              console.log("DATA ASLI JSON: " + APIData);
 
               // console.log(new Buffer.from(APIData, "Hex"));
               // console.log(APIData);
 
               APIData = APIData.slice(20, 80);
 
-              // console.log("APIData 20-80: " + APIData);
+              console.log("APIData Yang Digunakan: " + APIData);
 
               // console.log("APIData 0-2: " + APIData.slice(0, 2));
               // console.log("APIData 2-4: " + APIData.slice(2, 4));
@@ -335,7 +335,7 @@ exports.create = async (req, res) => {
                 k = 2;
 
               var hexa33 = 51;
-              //console.log("hexa33toBin: " + hexa33);
+              console.log("hexa33toBin: " + hexa33);
               //console.log(APIData.length);
 
               var HexTemp = 0,
@@ -351,12 +351,12 @@ exports.create = async (req, res) => {
 
                 // Data1 = hex2bin(Data1)
                 // console.log(typeof Data1);
-                // console.log("Data1 Hex: " + Data1);
+                //console.log("Data Hex: " + Data1);
                 // console.log("hexa33: " + hexa33);
 
                 var HasilData = Data1 - hexa33;
                 //console.log(typeof HasilData);
-                // console.log("HasilDataInteger: " + HasilData);
+                //console.log("HasilDataInteger: " + HasilData, "\n");
 
                 //console.log(HasilData.toString().length);
 
@@ -383,7 +383,7 @@ exports.create = async (req, res) => {
                 k += 2;
               }
               // console.log(typeof HasilDataFinal);
-              // console.log("HASILDATA FINAL: " + HasilDataFinal);
+              console.log("HASILDATA FINAL: " + HasilDataFinal);
 
               //APIData = APIData.hexEncode().hexDecode();
               // console.log(APIData);
@@ -431,16 +431,17 @@ exports.create = async (req, res) => {
               var powerFactor = HasilDataFinal.slice(53, 57);
               var status = HasilDataFinal.slice(57, 58);
 
-              // console.log("address: " + address);
-              // console.log("activeTotal: " + activeTotal);
-              // console.log("activePlus: " + activePlus);
-              // console.log("activeMinus: " + activeMinus);
-              // console.log("voltage: " + voltage);
-              // console.log("current: " + current);
-              // console.log("instantPower: " + instantPower);
-              // console.log("frequency: " + frequency);
-              // console.log("powerFactor: " + powerFactor);
-              // console.log("status: " + status);
+              console.log("\n\n");
+              console.log("activeTotal: " + activeTotal);
+              console.log("activePlus: " + activePlus);
+              console.log("activeMinus: " + activeMinus);
+              console.log("voltage: " + voltage);
+              console.log("current: " + current);
+              console.log("instantPower: " + instantPower);
+              console.log("frequency: " + frequency);
+              console.log("powerFactor: " + powerFactor);
+              console.log("status: " + status);
+              console.log("\n\n");
 
               allFunc.FuncVoltage(voltage);
               allFunc.FuncCurrent(current);
