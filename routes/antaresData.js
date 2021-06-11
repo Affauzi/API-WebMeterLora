@@ -4,8 +4,8 @@ module.exports = (app) => {
   // Retrieve all Customers
   app.get("/data", data.findAll);
 
-  app.post("/data", data.create, async function (req, res) {
-    res.send("A"); //data.create
+  app.post("/data", data.create, function (req, res) {
+    //res.send("A"); //data.create
   });
 
   // funcGetPost: function getPost(req, res, next) {
