@@ -4,6 +4,8 @@ module.exports = (app) => {
   // Retrieve all Customers
   app.get("/data", data.findAll);
 
+  app.get("/data/:No_Meter", data.findOne);
+
   app.post("/data", data.create, function (req, res) {
     //res.send("A"); //data.create
   });

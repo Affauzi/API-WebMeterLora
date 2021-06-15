@@ -4,6 +4,7 @@ var cron = require("node-cron");
 var router = express.Router();
 const data = require("./controllers/antaresdata");
 const fetch = require("node-fetch");
+var cors = require("cors");
 
 // ini gue tambahin untuk logging backend, kalo gak diperlukan, apus aja
 var morgan = require("morgan");
@@ -20,7 +21,7 @@ app.use(morgan("dev"));
 // hmm, instead of pake bodyParser, lebih baik pake expressnya langsung,
 // karena bodyParser udah deprecated
 app.use(express.json());
-
+app.use(cors());
 // parse requests of content-type: application/x-www-form-urlencoded
 // menurut gue ini gak begitu perlu.
 // app.use(bodyParser.urlencoded({ extended: true }));

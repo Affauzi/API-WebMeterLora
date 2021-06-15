@@ -3,7 +3,7 @@ const { json } = require("body-parser");
 const { response } = require("express");
 const express = require("express");
 const DataAntares = require("../models/antaresData");
-const DataMeter = require("../models/dataMeter");
+// const DataMeter = require("../models/dataMeter");
 const app = express();
 
 const { parse, stringify } = require("flatted");
@@ -211,6 +211,23 @@ exports.findAll = (req, res) => {
   //     }
   //   });
   // });
+};
+
+exports.findOne = (req, res) => {
+  console.log("no_meter: ", typeof req.params.No_Meter);
+  DataAntares.findById(req.params.No_Meter, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found No_Meter with id ${req.params.No_Meter}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error retrieving Data with id " + req.params.No_Meter,
+        });
+      }
+    } else res.send(data);
+  });
 };
 
 exports.create = async (req, res) => {
