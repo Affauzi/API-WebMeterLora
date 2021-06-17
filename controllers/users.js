@@ -23,7 +23,7 @@ exports.create = (req, res) => {
   const user = new Users({
     No_Meter: req.body.no_meter,
     nama: req.body.nama,
-    password: sha256(toString(req.body.password) + toString(req.body.no_meter)),
+    password: sha256(req.body.password + req.body.no_meter),
     status: req.body.status,
   });
 
@@ -38,6 +38,16 @@ exports.create = (req, res) => {
       user.status = 1;
     } else {
       user.status = 0;
+    }
+
+    if (user.No_Meter == null) {
+      throw new Error("No Meter Tidak Boleh Kosong");
+    }
+    if (user.nama == null) {
+      throw new Error("Nama Tidak Boleh Kosong");
+    }
+    if (user.password == null) {
+      throw new Error("Password Tidak Boleh Kosong");
     }
 
     console.log(user.password);

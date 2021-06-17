@@ -44,13 +44,13 @@ exports.findAll = (req, res) => {
   allFunc.FuncGetJumlah(function (err, callback) {
     // tugas lu cuma harus kerja di dalam function ini aja.
     // ini kan valuenya udah dapet:
-    //console.log("jumlah: ", callback, typeof callback);
+    console.log("jumlah: ", callback, typeof callback);
     //var namaMeter = dataMeter.getNamaMeter(); // ini lu samain aja ya
     //console.log("namaMeter: ", typeof namaMeter); // ini lu samain aja ya
 
     var jumlahMeter = JSON.parse(JSON.stringify(callback[0])).cnt;
 
-    //console.log("Jumlah Meter: ", jumlahMeter);
+    console.log("Jumlah Meter: ", jumlahMeter);
     // kalo tadi mau for loop dll, ya lakuin aja di sini, mau insert, axios
     // terserah, di sini bisa semua.
     // logika lain
@@ -62,13 +62,13 @@ exports.findAll = (req, res) => {
     allFunc.FuncGetNama(function (err, callback) {
       // tugas lu cuma harus kerja di dalam function ini aja.
       // ini kan valuenya udah dapet:
-      // console.log(
-      //   "NamaMeter: ",
-      //   callback,
-      //   typeof callback,
-      //   callback.length,
-      //   JSON.parse(JSON.stringify(callback[1])).nama_meter
-      // );
+      console.log(
+        "NamaMeter: ",
+        callback,
+        typeof callback,
+        callback.length,
+        JSON.parse(JSON.stringify(callback[1])).nama_meter
+      );
       //var namaMeter = dataMeter.getNamaMeter(); // ini lu samain aja ya
       //console.log("namaMeter: ", typeof namaMeter); // ini lu samain aja ya
 
@@ -76,7 +76,7 @@ exports.findAll = (req, res) => {
       for (let i = 0; i < callback.length; i++) {
         namaMeter.push(JSON.parse(JSON.stringify(callback[i])).nama_meter);
 
-        //console.log(namaMeter[i]);
+        console.log(namaMeter[i]);
       }
       //var jumlahMeter = JSON.parse(JSON.stringify(callback[0])).cnt;
 
@@ -124,7 +124,8 @@ exports.findAll = (req, res) => {
   // pastiin aja nilainya baik-baik aja. dan tidak terdistraksi oleh hal lain.
   // menurut gue lebih intuitive kalo pake yang async aja.
   setTimeout(function () {
-    //console.log(`SOLUSI LAIN: ${jumlah}`);
+    console.log(`SOLUSI LAIN: ${jumlah}`);
+
     // FOR LOOP DAN YANG LAINNYA
     // logika lain di sini
     // dan seterusnya sampe abis exportnya. nested terus
@@ -244,13 +245,13 @@ exports.create = async (req, res) => {
   allFunc.FuncGetJumlah(function (err, callback) {
     // tugas lu cuma harus kerja di dalam function ini aja.
     // ini kan valuenya udah dapet:
-    //console.log("jumlah: ", callback, typeof callback);
+    console.log("jumlah: ", callback, typeof callback);
     //var namaMeter = dataMeter.getNamaMeter(); // ini lu samain aja ya
     //console.log("namaMeter: ", typeof namaMeter); // ini lu samain aja ya
 
     var jumlahMeter = JSON.parse(JSON.stringify(callback[0])).cnt;
 
-    //console.log("Jumlah Meter: ", jumlahMeter);
+    console.log("Jumlah Meter: ", jumlahMeter);
     // kalo tadi mau for loop dll, ya lakuin aja di sini, mau insert, axios
     // terserah, di sini bisa semua.
     // logika lain
@@ -263,13 +264,13 @@ exports.create = async (req, res) => {
     allFunc.FuncGetNama(function (err, callback) {
       // tugas lu cuma harus kerja di dalam function ini aja.
       // ini kan valuenya udah dapet:
-      // console.log(
-      //   "NamaMeter: ",
-      //   callback,
-      //   typeof callback,
-      //   callback.length,
-      //   JSON.parse(JSON.stringify(callback[1])).nama_meter
-      // );
+      console.log(
+        "NamaMeter: ",
+        callback,
+        typeof callback,
+        callback.length,
+        JSON.parse(JSON.stringify(callback[1])).nama_meter
+      );
       //var namaMeter = dataMeter.getNamaMeter(); // ini lu samain aja ya
       //console.log("namaMeter: ", typeof namaMeter); // ini lu samain aja ya
 
@@ -277,7 +278,7 @@ exports.create = async (req, res) => {
       for (let i = 0; i < callback.length; i++) {
         namaMeter.push(JSON.parse(JSON.stringify(callback[i])).nama_meter);
 
-        // console.log(namaMeter[i]);
+        console.log(namaMeter[i]);
       }
       //var jumlahMeter = JSON.parse(JSON.stringify(callback[0])).cnt;
 
@@ -308,7 +309,7 @@ exports.create = async (req, res) => {
             namaMeter[i]
           }${"/la"}`;
 
-          // console.log("URL:", url);
+          console.log("URL:", url);
 
           // axiosInstance.get(url).then(resp => {
           //   console.log(`RESPONSE HEHE: ` + resp);
@@ -319,7 +320,7 @@ exports.create = async (req, res) => {
           axiosInstance
             .get(url)
             .then(async (response) => {
-              //console.log(`Response: ${response}`);
+              console.log(`Response: ${response}`);
               // nah, sekarang pake flatted untuk parsing dan stringifynya
               // karena response dari axios tsb bentuknya circular json (atau nested json)
               // console.log(JSON.parse(parse(stringify(response)).data['m2m:cin'].con).data)
@@ -341,7 +342,7 @@ exports.create = async (req, res) => {
 
               APIData = APIData.slice(20, 80);
 
-              //console.log("APIData Yang Digunakan: " + APIData);
+              // console.log("APIData Yang Digunakan: " + APIData);
 
               // console.log("APIData 0-2: " + APIData.slice(0, 2));
               // console.log("APIData 2-4: " + APIData.slice(2, 4));
@@ -415,7 +416,7 @@ exports.create = async (req, res) => {
               // console.log(Hex2Float);
 
               //var address = HasilDataFinal.slice(1, 9);
-              // console.log("NOMETERRRRR:" + no_meter);
+              //console.log("NOMETER:" + no_meter);
               var m = 12,
                 n = 14;
               var hasil_no_meter;
@@ -473,17 +474,6 @@ exports.create = async (req, res) => {
               //   "activeTotal: " + allFunc.FuncActiveTotal(activeTotal)
               // );
 
-              let options = {
-                  //timeZone: 'Europe/London',
-                  year: "numeric",
-                  month: "numeric",
-                  day: "numeric",
-                  hour: "numeric",
-                  minute: "numeric",
-                  second: "numeric",
-                },
-                formatter = new Intl.DateTimeFormat([], options);
-
               // Create a DataAntares
               var newData = new DataAntares({
                 ActiveTotal: allFunc.FuncActiveTotal(activeTotal),
@@ -496,12 +486,11 @@ exports.create = async (req, res) => {
                 PowerFactor: allFunc.FuncPowerFactor(powerFactor),
                 Status: status,
                 No_Meter: hasil_no_meter,
-                Datetime: formatter.format(new Date()),
+                Datetime: datetime,
               });
 
-              console.log(newData.Datetime);
               DataAntares.create(newData, (err, data) => {
-                //console.log(`DATAAAAA: ${data}`);
+                console.log(`DATAAAAA: ${data}`);
 
                 var responseAssigner = function (err, data) {
                   if (err) {
@@ -516,7 +505,7 @@ exports.create = async (req, res) => {
 
                 if (i == jumlahMeter - 1) responseAssigner(err, post_resp);
 
-                //console.log(`ITERATION: ${i}`);
+                console.log(`ITERATION: ${i}`);
               });
             })
             .catch((err) => {
