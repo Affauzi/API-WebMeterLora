@@ -3,6 +3,7 @@ const { sha256 } = require("js-sha256");
 
 exports.findAll = (req, res) => {
   Users.getAll((err, data) => {
+    console.log(Date());
     if (err)
       res.status(500).send({
         message: err.message || "Some error occurred while retrieving users.",

@@ -329,6 +329,10 @@ exports.create = async (req, res) => {
                 parse(stringify(response)).data["m2m:cin"].con
               ).data;
 
+              var tanggal = JSON.parse(
+                JSON.stringify(response.data["m2m:cin"])
+              ).ct;
+
               var assigners = function (data) {
                 no_meter = data;
               };
@@ -474,6 +478,8 @@ exports.create = async (req, res) => {
               //   "activeTotal: " + allFunc.FuncActiveTotal(activeTotal)
               // );
 
+              tanggalFix = allFunc.FuncConvertDate(tanggal);
+
               // Create a DataAntares
               var newData = new DataAntares({
                 ActiveTotal: allFunc.FuncActiveTotal(activeTotal),
@@ -486,8 +492,11 @@ exports.create = async (req, res) => {
                 PowerFactor: allFunc.FuncPowerFactor(powerFactor),
                 Status: status,
                 No_Meter: hasil_no_meter,
-                Datetime: datetime,
+                Datetime: tanggalFix,
               });
+
+              // console.log(newData.Datetime(Date.now()));
+              // console.log(toString(newData.Datetime(Date.now())));
 
               DataAntares.create(newData, (err, data) => {
                 console.log(`DATAAAAA: ${data}`);

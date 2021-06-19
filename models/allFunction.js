@@ -141,6 +141,30 @@ module.exports = {
     });
   },
 
+  FuncConvertDate: function FuncConvertDate(data) {
+    var tahun = data.slice(0, 4);
+    var bulan = data.slice(4, 6);
+    var hari = data.slice(6, 8);
+    var jam = data.slice(9, 11);
+    var menit = data.slice(11, 13);
+    var detik = data.slice(13, 15);
+
+    var hasildatetime = hari.concat(
+      "-",
+      bulan,
+      "-",
+      tahun,
+      " ",
+      jam,
+      ":",
+      menit,
+      ":",
+      detik
+    );
+
+    return hasildatetime;
+  },
+
   FuncGetURL: function FuncGetURL() {
     const getData = async (url) => {
       try {
