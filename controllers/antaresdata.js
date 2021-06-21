@@ -5,6 +5,7 @@ const express = require("express");
 const DataAntares = require("../models/antaresData");
 // const DataMeter = require("../models/dataMeter");
 const app = express();
+const Anomaly = require("../models/anomalyDetection");
 
 const { parse, stringify } = require("flatted");
 const hex = require("string-hex");
@@ -22,6 +23,7 @@ var no_meter;
 
 exports.findAll = (req, res) => {
   DataAntares.getAll((err, data) => {
+    Anomaly.funcMain();
     if (err)
       res.status(500).send({
         message: err.message || "Some error occurred while retrieving users.",

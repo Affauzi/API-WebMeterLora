@@ -6,6 +6,13 @@ const data = require("./controllers/antaresdata");
 const fetch = require("node-fetch");
 var cors = require("cors");
 
+("use strict");
+
+const fs = require("fs");
+const parse = require("csv-parse/lib/sync");
+const { AnomalyDetectorClient } = require("@azure/ai-anomaly-detector");
+const { AzureKeyCredential } = require("@azure/core-auth");
+
 // ini gue tambahin untuk logging backend, kalo gak diperlukan, apus aja
 var morgan = require("morgan");
 const { post } = require("request");
