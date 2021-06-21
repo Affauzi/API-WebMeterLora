@@ -39,10 +39,13 @@ LoginUser.create = (dataUser = [no_meter, password], result) => {
         return;
       }
 
+      console.log("DATA USER: ", dataUser, "RES:", res);
       const no_Meter_Form = dataUser[0];
       const password_Form = dataUser[1];
       const no_Meter_DB = JSON.parse(JSON.stringify(res[0])).no_meter;
       const password_DB = JSON.parse(JSON.stringify(res[0])).password;
+
+      console.log(no_Meter_Form, password_Form, no_Meter_DB, password_DB);
 
       if (no_Meter_Form == no_Meter_DB && password_Form == password_DB) {
         console.log("Berhasil Login");
