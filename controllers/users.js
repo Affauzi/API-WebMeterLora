@@ -77,3 +77,5 @@ exports.findOne = (req, res) => {
     } else res.send(data);
   });
 };
+
+exports.login = function (req, res) {};
