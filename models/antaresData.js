@@ -47,7 +47,7 @@ DataAntares.create = (dataMeter, result) => {
 DataAntares.findById = (No_Meter, result) => {
   console.log("no_meter: ", No_Meter);
   sql.query(
-    `SELECT * FROM uimeter_dataantares WHERE no_meter = ${No_Meter} ORDER by datetime DESC LIMIT 100`,
+    `SELECT * FROM uimeter_dataantares WHERE no_meter = ${No_Meter} ORDER by datetime DESC LIMIT 20`,
     (err, res) => {
       if (err) {
         console.log("error: ", err);

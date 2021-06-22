@@ -14,6 +14,7 @@ var allFunc = require("../models/allFunction");
 const { array } = require("prop-types");
 const { getJumlah } = require("../models/dataMeter");
 const dataMeter = require("../controllers/datameter");
+const sendMessage = require("../models/wabox");
 const { post } = require("request");
 const e = require("express");
 
@@ -23,7 +24,8 @@ var no_meter;
 
 exports.findAll = (req, res) => {
   DataAntares.getAll((err, data) => {
-    Anomaly.funcMain();
+    //Anomaly.funcMain();
+    sendMessage.funcSendMessage();
     if (err)
       res.status(500).send({
         message: err.message || "Some error occurred while retrieving users.",

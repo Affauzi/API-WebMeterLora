@@ -149,11 +149,11 @@ module.exports = {
     var menit = data.slice(11, 13);
     var detik = data.slice(13, 15);
 
-    var hasildatetime = hari.concat(
+    var hasildatetime = tahun.concat(
       "-",
       bulan,
       "-",
-      tahun,
+      hari,
       " ",
       jam,
       ":",
