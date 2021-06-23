@@ -154,12 +154,13 @@ module.exports = {
       bulan,
       "-",
       hari,
-      " ",
+      "T",
       jam,
       ":",
       menit,
       ":",
-      detik
+      detik,
+      "Z"
     );
 
     return hasildatetime;

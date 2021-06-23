@@ -46,13 +46,15 @@ function read_series_from_file(path) {
   parsed.forEach(function (e) {
     result.push({ timestamp: new Date(e[0]), value: Number(e[1]) });
   });
-  console.log(result);
+  //console.log(result);
   return result;
 }
 // You will need to set this environment variables in .env file or edit the following values
 
 module.exports = {
   funcMain: async function main() {
+    console.log("menjalankan anomaly API");
+
     // create client
     const client = new AnomalyDetectorClient(
       endpoint,
@@ -62,7 +64,7 @@ module.exports = {
     // construct request
     const request = {
       series: read_series_from_file(timeSeriesDataPath),
-      granularity: KnownTimeGranularity.hourly,
+      granularity: KnownTimeGranularity.daily,
     };
 
     console.log(request.series);

@@ -24,8 +24,8 @@ var no_meter;
 
 exports.findAll = (req, res) => {
   DataAntares.getAll((err, data) => {
-    //Anomaly.funcMain();
-    sendMessage.funcSendMessage();
+    Anomaly.funcMain();
+    //sendMessage.funcSendMessage();
     if (err)
       res.status(500).send({
         message: err.message || "Some error occurred while retrieving users.",
@@ -127,13 +127,13 @@ exports.findAll = (req, res) => {
   // khawatirnya nilainya ketuker2 aja sih. Jadi kalo mau make cara ini,
   // pastiin aja nilainya baik-baik aja. dan tidak terdistraksi oleh hal lain.
   // menurut gue lebih intuitive kalo pake yang async aja.
-  setTimeout(function () {
-    console.log(`SOLUSI LAIN: ${jumlah}`);
+  // setTimeout(function () {
+  //   console.log(`SOLUSI LAIN: ${jumlah}`);
 
-    // FOR LOOP DAN YANG LAINNYA
-    // logika lain di sini
-    // dan seterusnya sampe abis exportnya. nested terus
-  }, 2500);
+  //   // FOR LOOP DAN YANG LAINNYA
+  //   // logika lain di sini
+  //   // dan seterusnya sampe abis exportnya. nested terus
+  // }, 2500);
 
   /**
    * ================================================================================
