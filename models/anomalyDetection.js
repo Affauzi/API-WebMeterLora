@@ -1,3 +1,4 @@
+const sendMessage = require("../models/wabox");
 const {
   AnomalyDetectorClient,
   KnownTimeGranularity,
@@ -78,7 +79,10 @@ module.exports = {
     ) {
       console.log("Change points were detected from the series at index:");
       result.isChangePoint.forEach(function (changePoint, index) {
-        if (changePoint === true) console.log(index);
+        if (changePoint === true) {
+          console.log(index);
+          console.log("Sukses Mengirim");
+        }
       });
     } else {
       console.log("There is no change point detected from the series.");
