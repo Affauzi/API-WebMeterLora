@@ -8,6 +8,7 @@ const csv = require("csv-parser");
 
 const fs = require("fs");
 const parse = require("csv-parse/lib/sync");
+const outliers = require("outliers");
 
 const dataAnomaly = [];
 
@@ -47,7 +48,17 @@ function read_series_from_file(path) {
   parsed.forEach(function (e) {
     result.push({ timestamp: new Date(e[0]), value: Number(e[1]) });
   });
-  //console.log(result);
+
+  var outliersData = [];
+
+  for (let i = 0; i < result.length; i++) {
+    outliersData[i] = result[i].value;
+  }
+  console.log("outliersData: ", outliersData);
+
+  hasilOutliers = outliers(outliersData);
+  console.log("jumlah outliers: ", hasilOutliers.length, hasilOutliers);
+  //console.log("result:", result[0].value);
   return result;
 }
 // You will need to set this environment variables in .env file or edit the following values
@@ -80,7 +91,11 @@ module.exports = {
       console.log("Change points were detected from the series at index:");
       result.isChangePoint.forEach(function (changePoint, index) {
         if (changePoint === true) {
-          console.log(index);
+          var indexAnomaly = [];
+          indexAnomaly.push(index);
+          console.log(indexAnomaly.length);
+          //console.log(index, typeof index);
+          //sendMessage.funcSendMessage();
           console.log("Sukses Mengirim");
         }
       });
