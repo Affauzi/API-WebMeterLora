@@ -1,4 +1,5 @@
 const sendMessage = require("../models/wabox");
+
 const {
   AnomalyDetectorClient,
   KnownTimeGranularity,
@@ -12,6 +13,7 @@ const outliers = require("outliers");
 
 const dataAnomaly = [];
 
+var indexAnomaly = [];
 // Load the .env file if it exists
 // const dotenv = require("dotenv");
 
@@ -19,7 +21,7 @@ const dataAnomaly = [];
 const apiKey = "e82371c96e9b4fdaa9382d1d9ae4e24d";
 const endpoint = "https://lorameter.cognitiveservices.azure.com/";
 const timeSeriesDataPath =
-  "C:\\Users\\affau\\Documents\\LORA BRO\\API\\request-data.csv";
+  "C:\\Users\\affau\\Documents\\LORA BRO\\API\\data90111396_Juni.csv";
 //   "C:\\Users\\affau\\Documents\\LORA BRO\\API\\dataAnomaly.csv";
 // fs
 //   .createReadStream("dataAnomaly.csv")
@@ -91,16 +93,23 @@ module.exports = {
       console.log("Change points were detected from the series at index:");
       result.isChangePoint.forEach(function (changePoint, index) {
         if (changePoint === true) {
-          var indexAnomaly = [];
+          console.log(index);
+
           indexAnomaly.push(index);
-          console.log(indexAnomaly.length);
           //console.log(index, typeof index);
-          //sendMessage.funcSendMessage();
-          console.log("Sukses Mengirim");
         }
       });
     } else {
       console.log("There is no change point detected from the series.");
+    }
+
+    console.log(indexAnomaly.length, indexAnomaly);
+
+    if (indexAnomaly.length != 0) {
+      //sendMessage.funcSendMessage();
+      console.log("Sukses Mengirim");
+    } else {
+      console.log("Perubahan Data Normal");
     }
     // output:
     // Change points were detected from the series at index:

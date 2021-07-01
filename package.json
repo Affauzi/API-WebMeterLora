@@ -29,6 +29,7 @@
     "mysql": "^2.18.1",
     "node-cron": "^3.0.0",
     "node-fetch": "^2.6.1",
+    "node-sessionstorage": "^1.0.0",
     "nodemon": "^2.0.7",
     "outliers": "0.0.3",
     "prop-types": "^15.7.2",
